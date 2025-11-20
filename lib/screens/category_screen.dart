@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:ohara/data/dummy_data.dart';
+import 'package:ohara/models/book_model.dart';
 import 'package:ohara/screens/books_screen.dart';
 import 'package:ohara/widgets/category_grid.dart';
-import 'package:ohara/widgets/custom_sub_appbar.dart';
 
 class CategoryScreen extends StatelessWidget {
-  const CategoryScreen({super.key});
+  final void Function(Book book) onToggleFav;
+
+  const CategoryScreen({super.key, required this.onToggleFav});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomSubAppbar(title: 'Categories'),
+      // appBar: CustomSubAppbar(title: 'Categories'),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: GridView.builder(
@@ -33,6 +35,7 @@ class CategoryScreen extends StatelessWidget {
                   MaterialPageRoute(
                     builder:
                         (ctx) => BooksScreen(
+                          onToggleFav: onToggleFav,
                           title: category.name,
                           books: categoryBooks,
                         ),

@@ -31,12 +31,12 @@ class CustomBottomNavBar extends StatelessWidget {
             items: [
               BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
               BottomNavigationBarItem(
-                icon: Icon(Icons.category),
+                icon: Icon(Icons.library_books),
                 label: 'Category',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.settings),
-                label: 'Settings',
+                icon: Icon(Icons.star),
+                label: 'Favourites',
               ),
             ],
           ),

@@ -2,16 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:ohara/models/book_model.dart';
 import 'package:ohara/screens/book_contents.dart';
 import 'package:ohara/widgets/book_card.dart';
-import 'package:ohara/widgets/custom_sub_appbar.dart';
 
-class BooksScreen extends StatelessWidget {
-  final String title;
+class FavouritesScreen extends StatelessWidget {
   final List<Book> books;
   final void Function(Book book) onToggleFav;
 
-  const BooksScreen({
+  const FavouritesScreen({
     super.key,
-    required this.title,
     required this.books,
     required this.onToggleFav,
   });
@@ -19,7 +16,7 @@ class BooksScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomSubAppbar(title: title),
+      // appBar: CustomSubAppbar(title: 'Favourites'),
       body:
           books.isEmpty
               ? Center(
@@ -27,7 +24,7 @@ class BooksScreen extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 30.0),
                   child: Text(
                     textAlign: TextAlign.center,
-                    'Ooops! No books are available for this category.\nTry selecting a different category',
+                    "Oh! You currently don't have any favourite books, select one!",
                     style: TextStyle(fontSize: 18),
                   ),
                 ),

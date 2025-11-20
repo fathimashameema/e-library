@@ -4,8 +4,12 @@ import 'package:ohara/models/book_model.dart';
 
 class BookContents extends StatelessWidget {
   final Book book;
-
-  const BookContents({super.key, required this.book});
+  final void Function(Book book) onToggleFav;
+  const BookContents({
+    super.key,
+    required this.book,
+    required this.onToggleFav,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -15,6 +19,17 @@ class BookContents extends StatelessWidget {
             ? const Color.fromARGB(145, 255, 255, 255)
             : const Color.fromARGB(152, 0, 0, 0);
     return Scaffold(
+      appBar: AppBar(
+        title: Text(book.title),
+        actions: [
+          IconButton(
+            onPressed: () {
+              onToggleFav(book);
+            },
+            icon: Icon(Icons.star),
+          ),
+        ],
+      ),
       body: SingleChildScrollView(
         child: SafeArea(
           child: Padding(
