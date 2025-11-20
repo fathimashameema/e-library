@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:ohara/data/dummy_data.dart';
-import 'package:ohara/models/book_model.dart';
 import 'package:ohara/screens/books_screen.dart';
 import 'package:ohara/widgets/category_grid.dart';
 
 class CategoryScreen extends StatelessWidget {
-  final void Function(Book book) onToggleFav;
-
-  const CategoryScreen({super.key, required this.onToggleFav});
+  const CategoryScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -33,12 +30,10 @@ class CategoryScreen extends StatelessWidget {
                         .toList();
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder:
-                        (ctx) => BooksScreen(
-                          onToggleFav: onToggleFav,
-                          title: category.name,
-                          books: categoryBooks,
-                        ),
+                    builder: (ctx) => BooksScreen(
+                      title: category.name,
+                      books: categoryBooks,
+                    ),
                   ),
                 );
               },

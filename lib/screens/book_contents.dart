@@ -1,32 +1,45 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ohara/models/book_model.dart';
+import 'package:ohara/providers/app_state_providers.dart';
 
-class BookContents extends StatelessWidget {
+class BookContents extends ConsumerWidget {
   final Book book;
-  final void Function(Book book) onToggleFav;
+
   const BookContents({
     super.key,
     required this.book,
-    required this.onToggleFav,
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final screenMode = MediaQuery.of(context).platformBrightness;
     final Color textColor =
         screenMode == Brightness.dark
             ? const Color.fromARGB(145, 255, 255, 255)
             : const Color.fromARGB(152, 0, 0, 0);
+    final isFavourite = ref.watch(
+      favouriteBooksProvider.select(
+        (books) => books.any((savedBook) => savedBook.id == book.id),
+      ),
+    );
     return Scaffold(
       appBar: AppBar(
         title: Text(book.title),
         actions: [
           IconButton(
             onPressed: () {
-              onToggleFav(book);
+              final wasAdded =
+                  ref.read(favouriteBooksProvider.notifier).toggle(book);
+              final message = wasAdded
+                  ? 'Book added to favourites'
+                  : 'Book removed from favourites';
+              ScaffoldMessenger.of(context)
+                ..clearSnackBars()
+                ..showSnackBar(SnackBar(content: Text(message)));
             },
-            icon: Icon(Icons.star),
+            icon: Icon(isFavourite ? Icons.star : Icons.star_border),
           ),
         ],
       ),

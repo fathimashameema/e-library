@@ -1,20 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:ohara/models/book_model.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ohara/providers/app_state_providers.dart';
 import 'package:ohara/screens/book_contents.dart';
 import 'package:ohara/widgets/book_card.dart';
 
-class FavouritesScreen extends StatelessWidget {
-  final List<Book> books;
-  final void Function(Book book) onToggleFav;
-
-  const FavouritesScreen({
-    super.key,
-    required this.books,
-    required this.onToggleFav,
-  });
+class FavouritesScreen extends ConsumerWidget {
+  const FavouritesScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final books = ref.watch(favouriteBooksProvider);
     return Scaffold(
       // appBar: CustomSubAppbar(title: 'Favourites'),
       body:
@@ -39,11 +34,9 @@ class FavouritesScreen extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder:
-                              (ctx) => BookContents(
-                                book: book,
-                                onToggleFav: onToggleFav,
-                              ),
+                          builder: (ctx) => BookContents(
+                            book: book,
+                          ),
                         ),
                       );
                     },

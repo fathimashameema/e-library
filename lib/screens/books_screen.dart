@@ -7,13 +7,11 @@ import 'package:ohara/widgets/custom_sub_appbar.dart';
 class BooksScreen extends StatelessWidget {
   final String title;
   final List<Book> books;
-  final void Function(Book book) onToggleFav;
 
   const BooksScreen({
     super.key,
     required this.title,
     required this.books,
-    required this.onToggleFav,
   });
 
   @override
@@ -42,11 +40,9 @@ class BooksScreen extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder:
-                              (ctx) => BookContents(
-                                book: book,
-                                onToggleFav: onToggleFav,
-                              ),
+                          builder: (ctx) => BookContents(
+                            book: book,
+                          ),
                         ),
                       );
                     },

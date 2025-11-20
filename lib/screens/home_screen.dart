@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:ohara/data/dummy_data.dart';
-import 'package:ohara/models/book_model.dart';
 import 'package:ohara/screens/book_contents.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key, required this.onToggleFav});
-  final void Function(Book book) onToggleFav;
+  const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -33,11 +31,9 @@ class HomeScreen extends StatelessWidget {
                   onTap: (value) {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder:
-                            (ctx) => BookContents(
-                              book: randomFiveBooks[value],
-                              onToggleFav: onToggleFav,
-                            ),
+                        builder: (ctx) => BookContents(
+                          book: randomFiveBooks[value],
+                        ),
                       ),
                     );
                   },

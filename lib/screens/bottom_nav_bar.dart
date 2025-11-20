@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:ohara/models/book_model.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ohara/providers/app_state_providers.dart';
 import 'package:ohara/screens/category_screen.dart';
 import 'package:ohara/screens/favourites_screen.dart';
 import 'package:ohara/screens/home_screen.dart';
@@ -8,60 +9,25 @@ import 'package:ohara/widgets/custom_drawer.dart';
 import 'package:ohara/widgets/custom_sub_appbar.dart';
 import 'package:ohara/widgets/main_app_bar.dart';
 
-class BottomNavBar extends StatefulWidget {
+class BottomNavBar extends ConsumerWidget {
   const BottomNavBar({super.key});
 
-  @override
-  State<BottomNavBar> createState() => _BottomNavBarState();
-}
-
-class _BottomNavBarState extends State<BottomNavBar> {
-  List<Book> favouriteBooks = [];
-
-  void setScreen(String identifier) {
+  void setScreen(BuildContext context, String identifier) {
     if (identifier == 'filter') {
-    } else {
-      Navigator.of(context).pop();
+      return;
     }
-  }
-
-  void showMessage(String content) {
-    ScaffoldMessenger.of(context).clearSnackBars();
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(SnackBar(content: Text(content)));
-  }
-
-  void addOrRemoveFavourites(Book book) {
-    setState(() {
-      if (!favouriteBooks.contains(book)) {
-        favouriteBooks.add(book);
-        showMessage('Book added to the favourites');
-      } else {
-        favouriteBooks.remove(book);
-        showMessage('Book removed from favourites');
-      }
-    });
-  }
-
-  int currentIndex = 0;
-  void onSelect(int value) {
-    setState(() {
-      currentIndex = value;
-    });
+    Navigator.of(context).pop();
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final screenMode = MediaQuery.of(context).platformBrightness;
+    final currentIndex = ref.watch(bottomNavIndexProvider);
 
     final screens = [
-      HomeScreen(onToggleFav: addOrRemoveFavourites),
-      CategoryScreen(onToggleFav: addOrRemoveFavourites),
-      FavouritesScreen(
-        books: favouriteBooks,
-        onToggleFav: addOrRemoveFavourites,
-      ),
+      const HomeScreen(),
+      const CategoryScreen(),
+      const FavouritesScreen(),
     ];
     return Scaffold(
       appBar:
@@ -70,11 +36,14 @@ class _BottomNavBarState extends State<BottomNavBar> {
               : CustomSubAppbar(
                 title: currentIndex == 1 ? 'Category' : 'Favourites',
               ),
-      drawer: CustomDrawer(onSelectItem: setScreen),
+      drawer: CustomDrawer(
+        onSelectItem: (identifier) => setScreen(context, identifier),
+      ),
       body: screens[currentIndex],
       bottomNavigationBar: CustomBottomNavBar(
         currentIndex: currentIndex,
-        onSelect: onSelect,
+        onSelect: (value) =>
+            ref.read(bottomNavIndexProvider.notifier).state = value,
       ),
     );
   }
